@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обращения – Атоминформ</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="/" class="logo">Атоминформ</a>
+            <nav class="main-nav">
+                <a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Главная</a>
+                <a href="/services" class="<%= currentPage === 'services' ? 'active' : '' %>">Обращения</a>
+                <a href="/reviews" class="<%= currentPage === 'reviews' ? 'active' : '' %>">Отзывы</a>
+                <a href="/contacts" class="<%= currentPage === 'contacts' ? 'active' : '' %>">Контакты</a>
+                <a href="/admin" class="admin-entry">Администратор</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="benefits" style="position: relative; top: -1.5cm;">
+            <div class="container">
+                <h2>Возможности системы</h2>
+                <div class="benefits__grid">
+                    <div class="benefit-card">
+                        <img src="/images/icon-speed.png" alt="Регистрация заявок" width="64">
+                        <h3>Регистрация заявок</h3>
+                        <p>Создание и хранение обращений пользователей в единой базе данных.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <img src="/images/icon-money.png" alt="Обработка обращений" width="64">
+                        <h3>Обработка обращений</h3>
+                        <p>Контроль статуса заявок и управление поступающими запросами.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <img src="/images/icon-docs.png" alt="Система отзывов" width="64">
+                        <h3>Система отзывов</h3>
+                        <p>Сбор отзывов пользователей и анализ качества обслуживания.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="form-section" class="evaluation">
+            <div class="container">
+                <h2>Оставить обращение</h2>
+
+                <% if (locals.success) { %>
+                    <div class="success-message">
+                        Спасибо! Ваше обращение успешно зарегистрировано. Мы свяжемся с вами в ближайшее время.
+                    </div>
+                <% } %>
+
+                <% if (locals.error && locals.error.field === 'form') { %>
+                    <div class="alert alert--error"><%= error.message %></div>
+                <% } %>
+
+                <form action="/api/submit" method="POST" class="eval-form">
+                    <div class="form-group">
+                        <label for="fullName">ФИО</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Иванов Иван Иванович" required>
+                        <% if (locals.error && locals.error.field === 'fullName') { %>
+                            <div class="error" style="color: red; margin-top: 5px;"><%= error.message %></div>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="name@example.com" required>
+                        <% if (locals.error && locals.error.field === 'email') { %>
+                            <div class="error" style="color: red; margin-top: 5px;"><%= error.message %></div>
+                        <% } %>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Тема обращения</label>
+                        <input type="text" id="subject" name="subject" placeholder="Внедрение системы заявок" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority">Приоритет</label>
+                        <select id="priority" name="priority" required>
+                            <option value="Обычный">Обычный</option>
+                            <option value="Высокий">Высокий</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+7 (999) 123-45-67" required>
+                        <% if (locals.error && locals.error.field === 'phone') { %>
+                            <div class="error" style="color: red; margin-top: 5px;"><%= error.message %></div>
+                        <% } %>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary ripple">Отправить обращение</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Атоминформ. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

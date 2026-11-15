@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты – Атоминформ</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        .contacts-page-wide {
+            padding-left: 2cm;
+            padding-right: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }   
+        .contacts-map-wide {
+            width: 100%;
+            max-width: 100%;
+        }
+        .contacts-map-wide script {
+            width: 100% !important;
+            height: 450px !important;
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="/" class="logo">Атоминформ</a>
+            <nav class="main-nav">
+                <a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Главная</a>
+                <a href="/services" class="<%= currentPage === 'services' ? 'active' : '' %>">Обращения</a>
+                <a href="/reviews" class="<%= currentPage === 'reviews' ? 'active' : '' %>">Отзывы</a>
+                <a href="/contacts" class="<%= currentPage === 'contacts' ? 'active' : '' %>">Контакты</a>
+                <a href="/admin" class="admin-entry">Администратор</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="contacts-page-wide">
+        <h1>Контакты</h1>
+        
+        <div class="contacts-info">
+            <h3>📞 Телефон</h3>
+            <p>+7 (3952) 70-70-70</p>
+            <h3>✉️ Email</h3>
+            <p>info@atominform.local</p>
+            <h3>📍 Адрес</h3>
+            <p>г. Ангарск, ул. 14 Декабря, 22</p>
+        </div>
+
+        <div class="contacts-map-wide">
+            <h3>Наш офис</h3>
+            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A46e8f0fc86949d529c816204bca2660d5eaa5351edd5d1d2a822e633a9c12440&amp;width=90%&amp;height=400&amp;lang=ru_RU&amp;scroll=true"></script>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Атоминформ. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

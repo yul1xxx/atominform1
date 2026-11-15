@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы – Атоминформ</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="/" class="logo">Атоминформ</a>
+            <nav class="main-nav">
+                <a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Главная</a>
+                <a href="/services" class="<%= currentPage === 'services' ? 'active' : '' %>">Обращения</a>
+                <a href="/reviews" class="<%= currentPage === 'reviews' ? 'active' : '' %>">Отзывы</a>
+                <a href="/contacts" class="<%= currentPage === 'contacts' ? 'active' : '' %>">Контакты</a>
+                <a href="/admin" class="admin-entry">Администратор</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero reviews-hero">
+            <div class="container hero__content" style="position: relative; top: -0.5cm;">
+                <h1>Отзывы пользователей</h1>
+                <p class="hero-lead">⭐️ <span class="avg"><%= average %></span> <span class="muted">(на основе <%= count %> отзывов)</span></p>
+                <a href="#add-review" class="btn btn--primary ripple">Оставить отзыв</a>
+            </div>
+        </section>
+
+        <section class="container reviews-page">
+            <div class="tags-filter">
+                <a href="/reviews?tag=all" class="btn btn--small <%= selectedTag === 'all' || selectedTag === 'все' ? 'active' : '' %>">Все</a>
+                <a href="/reviews?tag=быстро" class="btn btn--small <%= selectedTag === 'быстро' ? 'active' : '' %>">Быстро</a>
+                <a href="/reviews?tag=удобно" class="btn btn--small <%= selectedTag === 'удобно' ? 'active' : '' %>">Удобно</a>
+                <a href="/reviews?tag=качественно" class="btn btn--small <%= selectedTag === 'качественно' ? 'active' : '' %>">Качественно</a>
+                <a href="/reviews?tag=современно" class="btn btn--small <%= selectedTag === 'современно' ? 'active' : '' %>">Современно</a>
+                <a href="/reviews?tag=полезно" class="btn btn--small <%= selectedTag === 'полезно' ? 'active' : '' %>">Полезно</a>
+                <a href="/reviews?tag=понятно" class="btn btn--small <%= selectedTag === 'понятно' ? 'active' : '' %>">Понятно</a>
+            </div>
+
+            <div class="reviews-grid">
+                <div class="reviews-list">
+                    <% if (reviews.length===0) { %>
+                        <p>Пока нет отзывов.</p>
+                    <% } else { %>
+                        <% reviews.forEach(r => { %>
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <strong><%= r.name %></strong>
+                                    <span class="rating">⭐ <%= r.rating %></span>
+                                </div>
+                                <div class="review-text"><%= r.text %></div>
+                                <% if (r.tags) { %>
+                                    <div class="review-tags">
+                                        <% r.tags.split(',').forEach(t => { if (t.trim()) { const tv = t.trim(); %>
+                                            <span class="tag" data-tag="<%= tv.toLowerCase() %>"><%= tv.charAt(0).toUpperCase()+tv.slice(1) %></span>
+                                        <% } }) %>
+                                    </div>
+                                <% } %>
+                                <div class="review-date"><%= r.created_at %></div>
+                            </div>
+                        <% }) %>
+                    <% } %>
+                </div>
+
+                <aside class="reviews-form" id="add-review">
+                    <h3>Оставить отзыв</h3>
+                    <% if (locals.error && locals.error.field==='form') { %>
+                        <div class="alert alert--error"><%= error.message %></div>
+                    <% } %>
+                    <form action="/reviews" method="POST" id="reviewForm">
+                        <div class="form-group">
+                            <label for="name">Имя</label>
+                            <input type="text" id="name" name="name" placeholder="Ваше имя">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rating">Оценка (звезды)</label>
+                            <select id="rating" name="rating">
+                                <option value="5">5</option>
+                                <option value="4.5">4.5</option>
+                                <option value="4">4</option>
+                                <option value="3.5">3.5</option>
+                                <option value="3">3</option>
+                                <option value="2.5">2.5</option>
+                                <option value="2">2</option>
+                                <option value="1.5">1.5</option>
+                                <option value="1">1</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Теги</label>
+                            <div class="checkboxes">
+                                <label><input type="checkbox" name="tags" value="быстро"> Быстро</label>
+                                <label><input type="checkbox" name="tags" value="удобно"> Удобно</label>
+                                <label><input type="checkbox" name="tags" value="качественно"> Качественно</label>
+                                <label><input type="checkbox" name="tags" value="современно"> Современно</label>
+                                <label><input type="checkbox" name="tags" value="полезно"> Полезно</label>
+                                <label><input type="checkbox" name="tags" value="понятно"> Понятно</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="text">Комментарий</label>
+                            <textarea id="text" name="text" rows="4" placeholder="Текст отзыва"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary">Отправить</button>
+                    </form>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Атоминформ. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

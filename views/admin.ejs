@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Админ-панель – Атоминформ</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* исправления для админки */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+            padding: 20px;
+            width: 100%;
+        }
+        .header {
+            width: 100%;
+        }
+        .header__inner {
+            width: 100%;
+            padding: 16px 20px;
+        }
+        .container {
+            max-width: 100%;
+            padding: 0;
+        }
+        .admin-header-stats {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .stats-grid {
+            justify-content: center;
+        }
+        .search-area {
+            width: 100%;
+        }
+        .search-area input {
+            flex: 1;
+            min-width: 0;
+        }
+        .admin-table th, 
+        .admin-table td {
+            padding: 8px 6px;
+            font-size: 12px;
+            word-break: break-word;
+        }
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+        .footer {
+            margin-top: auto;
+            width: 100%;
+        }
+        @media (max-width: 640px) {
+            .stat-card {
+                padding: 8px 12px;
+                min-width: 70px;
+            }
+            .stat-value {
+                font-size: 22px;
+            }
+            .stat-label {
+                font-size: 9px;
+            }
+            .admin-table th, 
+            .admin-table td {
+                padding: 6px 4px;
+                font-size: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            main {
+                padding: 12px;
+            }
+            .admin-table th, 
+            .admin-table td {
+                padding: 4px 3px;
+                font-size: 9px;
+            }
+            .btn-small {
+                padding: 3px 6px;
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="/" class="logo">Атоминформ</a>
+            <nav class="main-nav">
+                <a href="/">Главная</a>
+                <a href="/services">Обращения</a>
+                <a href="/reviews">Отзывы</a>
+                <a href="/contacts">Контакты</a>
+                <a href="/admin/logout" class="logout-btn">Выйти</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <h1 style="margin-bottom: 20px; font-size: 1.8rem;">Список обращений</h1>
+
+        <div class="admin-header-stats">
+            <div class="stats-grid">
+                <a href="/admin" class="stat-card all">
+                    <div class="stat-label">ВСЕГО</div>
+                    <div class="stat-value"><%= total %></div>
+                </a>
+                <a href="/admin?filter=new" class="stat-card new">
+                    <div class="stat-label">НОВЫХ</div>
+                    <div class="stat-value"><%= newCount %></div>
+                </a>
+                <a href="/admin?filter=processed" class="stat-card processed">
+                    <div class="stat-label">ОБРАБОТАНО</div>
+                    <div class="stat-value"><%= processedCount %></div>
+                </a>
+            </div>
+
+            <form method="GET" action="/admin" class="search-area">
+                <input type="text" name="search" placeholder="Поиск по ФИО, Email, телефону..." value="<%= searchQuery %>">
+                <button type="submit">Найти</button>
+                <a href="/admin">Сбросить</a>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ФИО</th>
+                        <th>Email</th>
+                        <th>Тема</th>
+                        <th>Приоритет</th>
+                        <th>Телефон</th>
+                        <th>Статус</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (submissions.length === 0) { %>
+                        <tr><td colspan="8">Нет обращений.</td></tr>
+                    <% } else { %>
+                        <% submissions.forEach(sub => { %>
+                            <tr>
+                                <td><%= sub.id %></td>
+                                <td><%= sub.fullName %> </td>
+                                <td><%= sub.email %> </td>
+                                <td><%= sub.subject %> </td>
+                                <td><%= sub.priority %> </td>
+                                <td><%= sub.phone %> </td>
+                                <td>
+                                    <span class="status <%= sub.status === 'new' ? 'status--new' : 'status--processed' %>">
+                                        <%= sub.status === 'new' ? 'Новая' : 'Обработана' %>
+                                    </span>
+                                 </td>
+                                <td>
+                                    <form action="/admin/status/<%= sub.id %>" method="POST" style="margin:0;">
+                                        <input type="hidden" name="status" value="<%= sub.status === 'new' ? 'processed' : 'new' %>">
+                                        <button type="submit" class="btn-small">
+                                            <%= sub.status === 'new' ? '✓ Обработать' : '↺ Вернуть' %>
+                                        </button>
+                                    </form>
+                                 </td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Атоминформ. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

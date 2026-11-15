@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Атоминформ – Обработка обращений</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .hero .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .hero__content {
+            flex: 1;
+            max-width: 500px;
+        }
+        .hero__image {
+            flex-shrink: 0;
+        }
+        .hero__image img {
+            width: 450px; 
+            height: auto;
+            animation: float 4s ease-in-out infinite;
+            display: block;
+            transform: translateX(-2cm);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(-2cm); }
+            50% { transform: translateY(-15px) translateX(-2cm); }
+            100% { transform: translateY(0px) translateX(-2cm); }
+        }
+        @media (max-width: 768px) {
+            .hero .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero__image img {
+                width: 250px;
+                transform: translateX(0);
+            }
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-15px); }
+                100% { transform: translateY(0px); }
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a href="/" class="logo">Атоминформ</a>
+            <nav class="main-nav">
+                <a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Главная</a>
+                <a href="/services" class="<%= currentPage === 'services' ? 'active' : '' %>">Обращения</a>
+                <a href="/reviews" class="<%= currentPage === 'reviews' ? 'active' : '' %>">Отзывы</a>
+                <a href="/contacts" class="<%= currentPage === 'contacts' ? 'active' : '' %>">Контакты</a>
+                <a href="/admin" class="admin-entry">Администратор</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero__content">
+                    <h1>Система обработки<br>обращений клиентов</h1>
+                    <p>Прототип информационной системы для<br>регистрации заявок, обработки обращений<br>и сбора отзывов пользователей.</p>
+                    <a href="/services#form-section" class="btn btn--primary ripple">Оставить обращение</a>
+                </div>
+                <div class="hero__image">
+                    <img src="/images/hero-bg.png" alt="Атоминформ">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Атоминформ. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>
